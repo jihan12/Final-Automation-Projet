@@ -6,6 +6,7 @@ import org.testng.annotations.BeforeTest;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.By.ByXPath;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,6 +22,7 @@ public class group_automation_test
 		WebDriver driver;
 		Select s;
 		Actions a;
+		String Parent;
 		
 		@BeforeTest
 		public void beforeTest() throws InterruptedException 
@@ -31,8 +33,11 @@ public class group_automation_test
 			Thread.sleep(2000);
 			driver.get("https://www.aarohibloodbank.org/");
 			//Thread.sleep(2000);
+			//naming main window as parent
+			Parent = driver.getWindowHandle();
 			
-			//Mouse Hover
+			
+			//Mouse Hover class
 			Actions a=new Actions(driver); 
 					 
 			List<WebElement> ls=driver.findElements(By.xpath("/html/body/div[1]/header/div/div/div/div[2]/nav/div[2]/ul/li"));
@@ -46,7 +51,7 @@ public class group_automation_test
 			System.out.println(driver.findElement(By.xpath("/html/body/div[1]/header/div/div/div/div[2]/nav/div[2]/ul/li["+i+"]")).getText());
 			Thread.sleep(1000);		 
 			//Perform Mouse Hover
-			a.moveToElement(driver.findElement(By.xpath("/html/body/div[1]/header/div/div/div/div[2]/nav/div[2]/ul/li["+i+"]"))).click().perform();
+			a.moveToElement(driver.findElement(By.xpath("/html/body/div[1]/header/div/div/div/div[2]/nav/div[2]/ul/li["+i+"]"))).perform();
 			}
 				
 		}
@@ -66,6 +71,7 @@ public class group_automation_test
 			//scroll down
 			JavascriptExecutor js = (JavascriptExecutor)driver;
 			js.executeScript("window.scrollTo(0,8)");
+			Thread.sleep(5000);
 			
 			  driver.findElement(By.xpath("//*[@id=\"register-form\"]/div/div[1]/input")).sendKeys("Sree");
 			  Thread.sleep(1400);
@@ -88,6 +94,38 @@ public class group_automation_test
 			  driver.findElement(By.xpath("//*[@id=\"register-form\"]/div/div[7]/textarea")).sendKeys("Hyderabad");
 			  Thread.sleep(1400);
 			  driver.findElement(By.xpath("//*[@id=\"register-form\"]/div/div[8]/button")).click();
+			  Thread.sleep(4000);
+			  
+			  //going back to home page
+			  driver.get("https://www.aarohibloodbank.org/");
+			  
+			  //click INR Donations 
+			  driver.findElement(By.xpath("/html/body/div[1]/section[2]/div/div[1]/div[1]/div/a[3]")).click();
+			  Thread.sleep(4000);
+			  //switching to main window
+			  driver.switchTo().window(Parent);
+			  
+			  //click globalgiving
+			  Thread.sleep(2000);
+			  driver.findElement(By.xpath("/html/body/div[1]/section[2]/div/div[1]/div[1]/div/a[2]")).click();
+			  Thread.sleep(4000);
+			  driver.switchTo().window(Parent);
+			  
+			  //click donateblood
+			  Thread.sleep(2000);
+			  driver.findElement(By.xpath("/html/body/div[1]/section[2]/div/div[1]/div[1]/div/a[1]")).click();
+			  Thread.sleep(4000);
+			  driver.switchTo().window(Parent);
+			  
+			  
+			  //smoke test for right navigation arrow on photos that are in slideshow
+			  driver.findElement(By.xpath("//*[@id=\"jssor_1\"]/div/div/span[2]")).click();
+			  Thread.sleep(2000);
+			  
+			  //smoke test for left navigation arrow on photos that are in slideshow
+			  driver.findElement(By.xpath("//*[@id=\"jssor_1\"]/div/div/span[1]")).click();				
+			  Thread.sleep(2000);
+			  
 		  }
 		
 		@Test(priority=2)
@@ -150,6 +188,7 @@ public class group_automation_test
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//*[@id=\"widget-preview\"]/ul/li/span/a/img")).click();
 			Thread.sleep(2000);
+			driver.switchTo().window(Parent);
 		}
 		
 		@Test(priority=4)
@@ -181,7 +220,7 @@ public class group_automation_test
 		@AfterTest
 		public void afterTest() 
 		{
-			driver.close();
+			driver.quit();
 		}
 
 	}
